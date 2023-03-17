@@ -14,14 +14,14 @@
 #include <set>
 #include <queue>
 
-#include "movie.h"
+#include "movies.h"
 
 using namespace std;
 
 
 bool parseLine(string &line, string &movieName, double &movieRating);
-void alphabetizeML(vector <Movie> ml);
-void printML(vector <Movie> ml);
+void alphabetizeML(vector <Movies> ml);
+void printML(vector <Movies> ml);
 
 int main(int argc, char** argv){
     if (argc < 2){
@@ -39,7 +39,7 @@ int main(int argc, char** argv){
     }
   
     // Create an object of a STL data-structure to store all the movies
-    vector <Movie> movielist;
+    vector <Movies> movielist;
     //cout << "movieList is created" << endl;
   
     string line, movieName;
@@ -51,7 +51,7 @@ int main(int argc, char** argv){
 
             //cout << "Movie name: " << movieName << ", " << "Movie Rating: " << movieRating << endl;
 
-            movielist.push_back(Movie(movieName, movieRating));
+            movielist.push_back(Movies(movieName, movieRating));
 
             //cout << "data added " << endl;
 
@@ -107,9 +107,9 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
     return true;
 }
 
-void alphabetizeML(vector <Movie> ml) {
+void alphabetizeML(vector <Movies> ml) {
     //alphabetizes movielist
-    Movie temp;
+    Movies temp;
     for (int i = 0; i < ml.size(); i++) {
         for (int j = i + 1; j < ml.size(); j++) {
             if (ml.at(i).getName() > ml.at(j).getName()) {
@@ -126,7 +126,7 @@ void alphabetizeML(vector <Movie> ml) {
     return;
 }
 
-void printML(vector <Movie> ml) {
+void printML(vector <Movies> ml) {
     for (int i = 0; i < ml.size(); i++) {
         cout << ml.at(i).getName() << ", " << ml.at(i).getRating() << endl;
     }

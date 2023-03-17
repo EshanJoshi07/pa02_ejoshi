@@ -1,28 +1,28 @@
-//movie.cpp
+//movies.cpp
 //NAME: Eshan Joshi
 
 #include <iostream>
 #include <string>
-#include "movie.h"
+#include "movies.h"
 
 using namespace std;
 
-Movie::Movie() {
+Movies::Movies() {
     name = "";
     rating = 0;
 }
 
-Movie::Movie (string n, double r) {
+Movies::Movies (string n, double r) {
     name = n;
     //cout << "name set: " << name << endl;
     rating = r;
     //cout << "rating set: " << rating << endl;
 }
 
-string Movie::getName() {
+string Movies::getName() {
     return name;
 }
 
-double Movie::getRating() {
+double Movies::getRating() {
     return rating;
 }

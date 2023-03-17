@@ -5,11 +5,11 @@ CXXFLAGS = -std=c++11
 
 # runMovies: main.cpp 
 # 	g++ $(CXXFLAGS) main.cpp -o main
-runMovies: main.o movie.o
-	g++ $(CXX_FLAG) main.o movie.o -o runMovies
+runMovies: main.o movies.o
+	g++ $(CXX_FLAG) main.o movies.o -o runMovies
 
-movie.o: movie.cpp
-	g++ -c $(CXX_FLAG) movie.cpp
+movies.o: movies.cpp
+	g++ -c $(CXX_FLAG) movies.cpp
 
 main.o: main.cpp
 	g++ -c $(CXX_FLAG) main.cpp
