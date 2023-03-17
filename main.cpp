@@ -14,11 +14,14 @@
 #include <set>
 #include <queue>
 
-#include <movie.h>
+#include "movie.h"
 
 using namespace std;
 
+
 bool parseLine(string &line, string &movieName, double &movieRating);
+void alphabetizeML(vector <Movie> ml);
+void printML(vector <Movie> ml);
 
 int main(int argc, char** argv){
     if (argc < 2){
@@ -28,6 +31,7 @@ int main(int argc, char** argv){
     }
 
     ifstream movieFile (argv[1]);
+    //cout << "moviefile is created" << endl;
  
     if (movieFile.fail()){
         cerr << "Could not open file " << argv[1];
@@ -36,27 +40,36 @@ int main(int argc, char** argv){
   
     // Create an object of a STL data-structure to store all the movies
     vector <Movie> movielist;
+    //cout << "movieList is created" << endl;
   
     string line, movieName;
     double movieRating;
     // Read each file and store the name and rating
+
+    
     while (getline (movieFile, line) && parseLine(line, movieName, movieRating)){
 
+            //cout << "Movie name: " << movieName << ", " << "Movie Rating: " << movieRating << endl;
+
             movielist.push_back(Movie(movieName, movieRating));
+
+            //cout << "data added " << endl;
 
             // Use std::string movieName and double movieRating
             // to construct your Movie objects
             // cout << movieName << " has rating " << movieRating << endl;
             // insert elements into your data structure
     }
+    //cout << "movieList is filled in random order" << endl;
 
     movieFile.close();
 
     if (argc == 2){
             alphabetizeML(movielist);
-            printML(movielist);
+            //printML(movielist);
             //print all the movies in ascending alphabetical order of movie names
             return 0;
+            //cout << "movieList is alphabetized and printed" << endl;
     }
 
     //  For each prefix,
@@ -102,16 +115,22 @@ void alphabetizeML(vector <Movie> ml) {
             if (ml.at(i).getName() > ml.at(j).getName()) {
                 temp = ml.at(i);
                 ml.at(i) = ml.at(j);
+                //cout << ml.at(i).getName() << endl;
                 ml.at(j) = temp;
+                //cout << ml.at(j).getName() << endl;
             }
         } 
     }
+    //cout << "movielist list is alphabetized" << endl;
+    printML(ml);
     return;
 }
 
 void printML(vector <Movie> ml) {
     for (int i = 0; i < ml.size(); i++) {
-        cout << ml.at(i).getName() << ", " << ml.at(i).getName() << endl;
+        cout << ml.at(i).getName() << ", " << ml.at(i).getRating() << endl;
     }
+    //cout << "movielist list is printed" << endl;
     return;
 }
+

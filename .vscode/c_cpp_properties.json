@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [],
+            "configurationProvider": "ms-vscode.makefile-tools"
+        },
+        {
+            "name": "test",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": []
+        }
+    ],
+    "version": 4
+}

@@ -1,11 +1,12 @@
 //movie.h
 //NAME: Eshan Joshi
 
+#ifndef MOVIE_H
+#define MOVIE_H
+
 #include <iostream>
 #include <string>
 
-#ifndef MOVIE_H
-#define MOVIE_H
 
 using namespace std;
 
@@ -19,8 +20,6 @@ class Movie {
 
         Movie(string n, double r);
         
-        //destructor
-        ~Movie();
         string getName();
         double getRating();
 };

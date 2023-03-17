@@ -3,17 +3,20 @@
 
 #include <iostream>
 #include <string>
-#include <movie.h>
+#include "movie.h"
 
 using namespace std;
 
-Movie::Movie (string n, double r) {
-    name = n;
-    rating = r;
+Movie::Movie() {
+    name = "";
+    rating = 0;
 }
 
-Movie::~Movie() {
-    delete this;
+Movie::Movie (string n, double r) {
+    name = n;
+    //cout << "name set: " << name << endl;
+    rating = r;
+    //cout << "rating set: " << rating << endl;
 }
 
 string Movie::getName() {
