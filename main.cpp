@@ -210,8 +210,8 @@ void moviesByPreAndRating (vector <Movies> ml, int argc, char** argv) {
 		}
 	
 		
-		// Sort based on rating after compiling all matching prefixes into a list
-		sort(samePrefixMovie.begin(),samePrefixMovie.end(),compareRating);
+		// // Sort based on rating after compiling all matching prefixes into a list
+		// sort(samePrefixMovie.begin(),samePrefixMovie.end(),compareRating);
 			
 		// Print movies that match with prefix
 		for (int k=0;k<samePrefixMovie.size();k++){
