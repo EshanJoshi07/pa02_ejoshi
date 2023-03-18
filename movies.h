@@ -22,6 +22,9 @@ class Movies {
         
         string getName();
         double getRating();
+
+        void setName(string n);
+        void setRating(double r);
 };
 
 #endif

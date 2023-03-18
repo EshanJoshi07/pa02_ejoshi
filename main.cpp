@@ -46,12 +46,13 @@ int main(int argc, char** argv){
     double movieRating;
     // Read each file and store the name and rating
 
-    
+    Movies temp;
     while (getline (movieFile, line) && parseLine(line, movieName, movieRating)){
 
             //cout << "Movie name: " << movieName << ", " << "Movie Rating: " << movieRating << endl;
-
-            movielist.push_back(Movies(movieName, movieRating));
+            temp.setName(movieName);
+            temp.setRating(movieRating);
+            movielist.push_back(temp);
 
             //cout << "data added " << endl;
 

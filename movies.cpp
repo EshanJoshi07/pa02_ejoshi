@@ -26,3 +26,11 @@ string Movies::getName() {
 double Movies::getRating() {
     return rating;
 }
+
+void Movies::setName(string n) {
+    name = n;
+}
+
+void Movies::setRating(double r) {
+    rating = r;
+}
