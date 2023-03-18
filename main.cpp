@@ -163,14 +163,16 @@ int main(int argc, char** argv) {
 		//  For each prefix,
 		//  Print the highest rated movie with that prefix if it exists.
 		//if (foundPrefixes.size() > 0) {
-			for (int i = 0; i < foundPrefixes.size(); i++) {
-				if (bestMovies.at(i).getName().capacity() != 0) {
+			for (int i = 0; i < bestMovies.size(); i++) {
+				
+				//cout << "augh " << bestMovies.size() << endl;
+				// if (!bestMovies.at(i).getName().empty()) {
 				// 	break;
 				// }
 				// else {
-					cout << "Best movie with prefix "<<foundPrefixes.at(i)<<" is: " << bestMovies.at(i).getName() <<" with rating " << std::fixed << std::setprecision(1) <<bestMovies.at(i).getRating()<< endl;
-				}
-				// cout << "augh " << foundPrefixes.at(i) << endl;
+				cout << "Best movie with prefix "<<foundPrefixes.at(i)<<" is: " << bestMovies.at(i).getName() <<" with rating " << std::fixed << std::setprecision(1) <<bestMovies.at(i).getRating()<< endl;
+				// }
+				// cout << "augh " << foundPrefixes.size() << endl;
 				// cout << "augh " << bestMovies.at(i).getName() << endl;
 				// cout << "Best movie with prefix "<<foundPrefixes.at(i)<<" is: " << bestMovies.at(i).getName() <<" with rating " << std::fixed << std::setprecision(1) <<bestMovies.at(i).getRating()<< endl;
 
