@@ -20,7 +20,7 @@ using namespace std;
 
 
 bool parseLine(string &line, string &movieName, double &movieRating);
-void alphabetizeML(vector <Movies> ml);
+vector <Movies> alphabetizeML(vector <Movies> ml);
 void printML(vector <Movies> ml);
 bool compareRating(Movies a, Movies b);
 void moviesByPreAndRating (vector <Movies> ml, int argc, char** argv);
@@ -68,20 +68,122 @@ int main(int argc, char** argv) {
 	movieFile.close();
 
 	if (argc == 2){
-			alphabetizeML(movielist);
+			movielist = alphabetizeML(movielist);
+			printML(movielist);
 			//print all the movies in ascending alphabetical order of movie names
 			return 0;
 			//cout << "movieList is alphabetized and printed" << endl;
 	}
 
-	if (argc > 2) {
-		moviesByPreAndRating (movielist, argc, argv);
-	}
-	return 0;
+	if(argc > 2){
+		movielist = alphabetizeML(movielist);
+		string prefix;
+		vector<Movies> bestMovies;
+		vector<string> foundPrefixes;
+
+		for(int i = 2; i < argc; i++) {
+			vector<Movies> samePrefixMovie;
+			int left = 0;
+			int right = movielist.size()-1;
+			int middle = 0;
+			bool areSame = true;
+			prefix=argv[i];
+
+			while (left <= right) { 
+				middle = (left + (right))/2;
+				for (int k = 0; k < prefix.size(); k++) {
+					if (movielist.at(middle).getName().at(k) != prefix.at(k)) {
+						areSame = false;
+						break;
+					}
+				}        
+				if (areSame) {
+					samePrefixMovie.push_back(movielist.at(middle));
+					break;
+				}
+				if (movielist.at(middle).getName() < argv[i]) {
+					left = middle+1;
+				}
+				else {
+					right = middle - 1;
+				}
+				areSame = true;
+			}
+
+			if (samePrefixMovie.size() == 0) {
+				cout << "No movies found with prefix " << prefix << endl;
+				i++;
+			}
+
+			foundPrefixes.push_back(prefix);
+
+			for (int k = middle - 1; k > 0; k--) {
+				for (int j = 0; j < prefix.size(); j++) {
+					if (movielist.at(k).getName().at(j) != prefix.at(j)) {
+						areSame = false;
+						break;
+					}
+				}
+				if (areSame) {
+					samePrefixMovie.push_back(movielist.at(k));
+				}
+				areSame = true;
+			}
+
+			for (int k = middle + 1; k < movielist.size(); k++) {
+				for (int j = 0; j < prefix.size(); j++) {
+					if (movielist.at(k).getName().at(j) != prefix.at(j)) {
+						areSame = false;
+						break;
+					}
+				}
+				if (areSame) {
+					samePrefixMovie.push_back(movielist.at(k));
+				}
+				areSame = true;
+			}
+			
+			// Sort based on rating after compiling all matching prefixes into a list
+			sort(samePrefixMovie.begin(), samePrefixMovie.end(), compareRating);
+			
+			// Print movies that match with prefix
+			for (int k = 0; k < samePrefixMovie.size(); k++) {
+				cout << samePrefixMovie.at(k).getName() << ", " <<  std::fixed << std::setprecision(1) << samePrefixMovie.at(k).getRating() << endl;
+			}
+
+			// Add highest rating movies into a list
+			if(!samePrefixMovie.empty()){
+				bestMovies.push_back(samePrefixMovie.at(0));
+			}
+
+			cout << endl;
+			
+			
+		}
+		//  For each prefix,
+		//  Print the highest rated movie with that prefix if it exists.
+		//if (foundPrefixes.size() > 0) {
+			for (int i = 0; i < foundPrefixes.size(); i++) {
+				if (bestMovies.at(i).getName().capacity() != 0) {
+				// 	break;
+				// }
+				// else {
+					cout << "Best movie with prefix "<<foundPrefixes.at(i)<<" is: " << bestMovies.at(i).getName() <<" with rating " << std::fixed << std::setprecision(1) <<bestMovies.at(i).getRating()<< endl;
+				}
+				// cout << "augh " << foundPrefixes.at(i) << endl;
+				// cout << "augh " << bestMovies.at(i).getName() << endl;
+				// cout << "Best movie with prefix "<<foundPrefixes.at(i)<<" is: " << bestMovies.at(i).getName() <<" with rating " << std::fixed << std::setprecision(1) <<bestMovies.at(i).getRating()<< endl;
+
+			}
+		//}
+
+		return 0;
+  	}
 }
 
 
 /* Add your run time analysis for part 3 of the assignment here as commented block*/
+//didn't get time to finish runtime analysis :(
 
 bool parseLine(string &line, string &movieName, double &movieRating) {
 	if (line.length() <= 0) return false;
@@ -104,23 +206,25 @@ bool parseLine(string &line, string &movieName, double &movieRating) {
 	return true;
 }
 
-void alphabetizeML(vector <Movies> ml) {
+vector <Movies> alphabetizeML(vector <Movies> ml) {
 	//alphabetizes movielist
+	vector <Movies> alpha = ml;
+
 	Movies temp;
-	for (int i = 0; i < ml.size(); i++) {
-		for (int j = i + 1; j < ml.size(); j++) {
-			if (ml.at(i).getName() > ml.at(j).getName()) {
-				temp = ml.at(i);
-				ml.at(i) = ml.at(j);
+	for (int i = 0; i < alpha.size(); i++) {
+		for (int j = i + 1; j < alpha.size(); j++) {
+			if (alpha.at(i).getName() > alpha.at(j).getName()) {
+				temp = alpha.at(i);
+				alpha.at(i) = alpha.at(j);
 				//cout << ml.at(i).getName() << endl;
-				ml.at(j) = temp;
+				alpha.at(j) = temp;
 				//cout << ml.at(j).getName() << endl;
 			}
 		} 
 	}
 	//cout << "movielist list is alphabetized" << endl;
-	printML(ml);
-	return;
+	//printML(ml);
+	return alpha;
 }
 
 void printML(vector <Movies> ml) {
@@ -132,101 +236,5 @@ void printML(vector <Movies> ml) {
 }
 
 bool compareRating(Movies a, Movies b) {
-	return (a.getRating() < b.getRating());
-}
-
-void moviesByPreAndRating (vector <Movies> ml, int argc, char** argv) {
-	string pre;
-	vector<Movies> bestMovies;
-	vector<string> foundPre;
-	vector <Movies> samePrefixMovie;
-
-	// Run for each prefix argument given
-	for(int i = 2; i < argc; i++) {
-		int left = 0;
-		int right = ml.size()-1;
-		int middle = 0;
-		bool areSame = true;
-		pre = argv[i];
-
-		// For each prefix, find all movies that have that prefix and store them in an appropriate data structure
-		// Binary search for middle
-		while(left <= right) { 
-			middle = (left + (right))/2;
-			for (int k = 0; k < pre.size(); k++) {
-				if(ml.at(middle).getName().at(k) != pre.at(k)) {
-					areSame = false;
-					break;
-				}
-			}        
-			if (areSame) {
-				samePrefixMovie.push_back(ml.at(middle));
-				break;
-			}
-			if (ml.at(middle).getName() < argv[i]) {
-				left = middle + 1;
-			}
-			else {
-				right = middle - 1;
-			}
-			areSame = true;
-		}
-		
-		// If no movie with that prefix exists print the following message
-		if (samePrefixMovie.size() == 0) {
-			cout << "No movies found with prefix " << pre << endl;
-			break;
-		}
-
-		// Add prefixes that have matches into a list
-		foundPre.push_back(pre);
-
-		// Linear search up from middle
-		for (int k = middle - 1; k > 0; k--){
-			for(int j = 0; j < pre.size(); j++) {
-				if (ml.at(k).getName().at(j) != pre.at(j)) {
-					areSame = false;
-					break;
-				}
-			}
-			if (areSame) {
-				samePrefixMovie.push_back(ml.at(k));
-			}
-			areSame = true;
-		}
-
-		// Linear search down from middle
-		for(int k = middle + 1; k < ml.size(); k++) {
-			for(int j = 0; j < pre.size(); j++) {
-				if(ml.at(k).getName().at(j) != pre.at(j)) {
-					areSame = false;
-					break;
-				}
-			}
-			if (areSame) {
-				samePrefixMovie.push_back(ml.at(k));
-			}
-			areSame = true;
-		}
-	
-		
-		// // Sort based on rating after compiling all matching prefixes into a list
-		// sort(samePrefixMovie.begin(),samePrefixMovie.end(),compareRating);
-			
-		// Print movies that match with prefix
-		for (int k=0;k<samePrefixMovie.size();k++){
-			cout << samePrefixMovie.at(k).getName() << ", " <<  std::fixed << std::setprecision(1) << samePrefixMovie.at(k).getRating() << endl;
-		}
-
-		// Add highest rating movies into a list
-		if(!samePrefixMovie.empty()){
-			bestMovies.push_back(samePrefixMovie.at(0));
-		}
-		cout << endl;
-	}
-    //  For each prefix,
-    //  Print the highest rated movie with that prefix if it exists.
-    for(int i = 0; i < foundPre.size(); i++) {
-      cout << "Best movie with prefix " << foundPre.at(i) << " is: " << bestMovies.at(i).getName() << " with rating " << std::fixed << std::setprecision(1) << bestMovies.at(i).getRating() << endl;
-	}
+	return (a.getRating() > b.getRating());
 }
